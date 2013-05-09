@@ -10,8 +10,35 @@ function bw_testimonial_id() {
 }
 
 /**
- * Create the jQuery code to cycle the selection, including the starting div
+ * Attempt to make the cycler responsive! 
  * 
+ * The parameters here were set after reading other peoples questions and answers.
+ * @link http://forum.jquery.com/topic/integrate-cycle-plugin-in-a-responsive-layout-using-media-queries
+ * 
+ * Then I tried to reduce the logic to the minimum that would work for blocks containing text and images.
+ * The trick was in setting the width and max-width in both the parms and the CSS 
+ *  
+ * The width: "100%" parameter ensures that the image can scale down when the main div gets too narrow for it
+ * Extract from @link http://jquery.malsup.com/cycle/options.html 
+ *  width - container width (if the 'fit' option is true, the slides will be set to this width as well)
+ *  fit - to force slides to fit container
+ *
+ * CSS used in oik.css
+ * .bw_testimonial { width: 100% !important; }
+ * .bw_testimonial img { max-width: 100% !important; }
+ *
+ */
+function _bw_testimonials_cycle_parms() {
+  $cycle_parms = array( "width" => "100%"
+                      , "fit" => 1
+                      );
+  $parms = bw_jkv( $cycle_parms );
+  return( $parms );
+}    
+
+/**
+ * Create the jQuery code to cycle the selection, including the starting div
+ * This code uses jQuery cycle.all 
  */
 function bw_testimonials_jq( $atts ) {
   oik_require( "shortcodes/oik-jquery.php" );
@@ -23,11 +50,11 @@ function bw_testimonials_jq( $atts ) {
   
   // bw_jquery( $selector, $method, $parms, $windowload );
   $selector = bw_testimonial_id();
-  bw_jquery( "#$selector", $method );
+  $parms = _bw_testimonials_cycle_parms();
+  bw_jquery( "#$selector", $method, $parms );
   $class = bw_array_get( $atts, "class", "bw_testimonial" );
   sdiv( $class, $selector );
-} 
- 
+}
 
 /**
  * Implement [bw_testimonials] shortcode

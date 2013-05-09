@@ -4,7 +4,7 @@ Donate link: http://www.oik-plugins.com/oik/oik-donate/
 Tags: testimonial, cycle.all, bw_testimonials, shortcodes, smart, lazy
 Requires at least: 3.5
 Tested up to: 3.5.1
-Stable tag: 0.1
+Stable tag: 0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,11 +39,17 @@ Yes - see above
 1. oik-testimonials in action
 
 == Upgrade Notice ==
+= 0.2 =
+Dependent upon oik base plugin v2.0-beta for responsive [bw_testimonials] shortcode
+
 = 0.1 =
 Dependent upon oik base plugin v2.0-alpha and oik-fields
 
 
-== Changelog == 
+== Changelog ==
+= 0.2 =
+* Changed: Added parameters to make the cycler responsive
+ 
 = 0.1 =
 * Added: New plugin sponsored by Susan Cowe for Survive and Thrive after Trauma
 
