@@ -3,8 +3,8 @@ Contributors: bobbingwide
 Donate link: http://www.oik-plugins.com/oik/oik-donate/
 Tags: testimonial, cycle.all, bw_testimonials, shortcodes, smart, lazy
 Requires at least: 3.5
-Tested up to: 3.5.1
-Stable tag: 0.2
+Tested up to: 3.6
+Stable tag: 0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,6 +39,10 @@ Yes - see above
 1. oik-testimonials in action
 
 == Upgrade Notice ==
+= 0.3 =
+If you already have testimonials then you will need to create new category entrys in the custom category "Testimonials". 
+Note: old category entries will not be deleted. If this causes you problems please let us know.
+
 = 0.2 =
 Dependent upon oik base plugin v2.0-beta for responsive [bw_testimonials] shortcode
 
@@ -47,6 +51,9 @@ Dependent upon oik base plugin v2.0-alpha and oik-fields
 
 
 == Changelog ==
+= 0.3 = 
+* Changed: Reverting to using custom category "testimonial-types" rather than attempting to piggy back on "category" used by posts
+ 
 = 0.2 =
 * Changed: Added parameters to make the cycler responsive
  

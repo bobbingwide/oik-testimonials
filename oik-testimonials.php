@@ -4,9 +4,10 @@ Plugin Name: oik-testimonials
 Plugin URI: http://www.oik-plugins.com/oik-plugins/oik-testimonials.php
 Description: "better by far" oik testimonials 
 Depends: oik base plugin, oik fields
-Version: 0.1
+Version: 0.3
 Author: bobbingwide
 Author URI: http://www.bobbingwide.com
+Text Domain: oik-testimonials
 License: GPL2
 
     Copyright 2012-2013 Bobbing Wide (email : herb@bobbingwide.com )
@@ -27,12 +28,14 @@ License: GPL2
 
 */
 
-add_action( 'oik_fields_loaded', 'oik_testimonials_init' );
-
 /**
  * Implement "oik_fields_loaded" action for oik-testimonials 
+ * 
+ * A custom category "testimonial-type" is used to categorise a large set of testimonials
+ * Note: The custom category name must be different from the CPT name
  */
 function oik_testimonials_init( ) {
+  bw_register_custom_category( "testimonial-type", null, __( "Testimonial type", "oik-testimonials" ) );
   oik_register_oik_testimonials();
   bw_add_shortcode( "bw_testimonials", "bw_testimonials", oik_path( "shortcodes/oik-testimonials.php", "oik-testimonials" ), false );
 }
@@ -41,24 +44,20 @@ function oik_testimonials_init( ) {
  * Register custom post type "oik_testimonials" 
  *
  * The description is the content field - the testimonial
- * The title should contain the testimonial author name
- * _oik_testimonial_name should also be the author's name
+ * The title should contain the testimonial's author name
+ * _oik_testimonial_name should also be the Author name
  * 
  */
 function oik_register_oik_testimonials() {
   $post_type = 'oik_testimonials';
   $post_type_args = array();
-  $post_type_args['label'] = 'Testimonials';
-  $post_type_args['description'] = 'Testimonials';
-  $post_type_args['taxonomies'] = array( 'post_tag', 'category' );
+  $post_type_args['label'] = __( 'Testimonials', "oik-testimonials" );
+  $post_type_args['description'] = __( 'Testimonials', "oik-testimonials" );
+  $post_type_args['taxonomies'] = array( "testimonial-type" );
+  //$post_type_args['has_archive'] = true;
   bw_register_post_type( $post_type, $post_type_args );
-  bw_register_field( "_oik_testimonials_name", "text", "Author name" ); 
+  bw_register_field( "_oik_testimonials_name", "text", __( "Author name", "oik-testimonials" ) ); 
   bw_register_field_for_object_type( "_oik_testimonials_name", $post_type );
-  
-  //$taxonomy = 'post_tag'; 
-  //bw_register_taxonomy( $taxonomy, $post_type, "Testimonial type" );
-  //register_taxonomy_for_object_type( $taxonomy, $post_type );
-
   add_filter( "manage_edit-${post_type}_columns", "oik_testimonials_columns", 10, 2 );
   add_action( "manage_${post_type}_posts_custom_column", "bw_custom_column_admin", 10, 2 );
 }
@@ -66,8 +65,8 @@ function oik_register_oik_testimonials() {
 /**
  * Implement "manage_edit-oik_testimonials_column" for oik-testimonials
  */
-function oik_testimonials_columns( $columns, $arg2 ) {
-  $columns["_oik_testimonials_name"] = __("Author Name"); 
+function oik_testimonials_columns( $columns, $arg2=null ) {
+  $columns["_oik_testimonials_name"] = __( "Author name", "oik-testimonials" ); 
   bw_trace2();
   return( $columns ); 
 } 
@@ -79,7 +78,13 @@ function _bw_theme_field_default__oik_testimonials_name( $key, $value ) {
   e( $value[0] );
 }
 
-add_action( "admin_notices", "oik_testimonials_activation" );
+/**
+ * Implement "oik_admin_menu" for oik-testimonials 
+ */
+function oik_testimonials_admin_menu() {
+  oik_register_plugin_server( __FILE__ );
+}
+
 /**
  * Implememt "admin_notices" action for oik_testimonials
  */ 
@@ -94,6 +99,16 @@ function oik_testimonials_activation() {
   oik_plugin_lazy_activation( __FILE__, $depends, "oik_plugin_plugin_inactive" );
 }
 
+/**
+ * Function performed when oik-testimonials.php is loaded 
+ */
+function oik_testimonials_plugin_loaded() {
+  add_action( 'oik_fields_loaded', 'oik_testimonials_init' );
+  add_action( "oik_admin_menu", "oik_testimonials_admin_menu" );
+  add_action( "admin_notices", "oik_testimonials_activation" );
+}
+
+oik_testimonials_plugin_loaded();
 
 
 

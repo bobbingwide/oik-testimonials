@@ -58,12 +58,19 @@ function bw_testimonials_jq( $atts ) {
 
 /**
  * Implement [bw_testimonials] shortcode
+ *
+ * Defaults: *  numberposts=5, post_type=oik_testimonials, orderby=rand
+ * 
+ * @param array $atts - shortcode parameters
+ * @param string $content - not expected
+ * @param string $tag 
+ * @return expanded shortcode
  */
 function bw_testimonials( $atts=null, $content=null, $tag=null ) {
   bw_testimonials_jq( $atts ); 
   $atts['numberposts'] = bw_array_get( $atts, "numberposts", 5 );
   $atts['post_type'] = bw_array_get( $atts, "post_type", "oik_testimonials" );
-  $atts['orderby'] = bw_array_get( $atts, "orderby", "random" );
+  $atts['orderby'] = bw_array_get( $atts, "orderby", "rand" );
   $atts['post_parent'] = 0;
   oik_require( "shortcodes/oik-pages.php" );
   e( bw_pages( $atts ));
@@ -86,7 +93,7 @@ function bw_testimonials__syntax( $shortcode="bw_testimonials" ) {
                  );
   $syntax += _sc_posts(); 
   $syntax['post_type'] = bw_skv( "oik_testimonials", "<i>post_type</i>", "Post type to select" );
-  $syntax['orderby'] = bw_skv( "random", "date|title|author", "Order by" );
+  $syntax['orderby'] = bw_skv( "rand", "date|title|author", "Order by" );
   $syntax['order'] = bw_skv( "ASC", "DESC", "Order" );
   return( $syntax );
 }                   
