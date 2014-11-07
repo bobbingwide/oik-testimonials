@@ -2,9 +2,9 @@
 Contributors: bobbingwide
 Donate link: http://www.oik-plugins.com/oik/oik-donate/
 Tags: testimonial, cycle.all, bw_testimonials, shortcodes, smart, lazy
-Requires at least: 3.5
-Tested up to: 3.7.1
-Stable tag: 0.4
+Requires at least: 3.9
+Tested up to: 4.0
+Stable tag: 0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,8 +18,8 @@ Features:
 * [bw_testimonials] shortcode to display cycling testimonials
 * uses oik base plugin for base functionality
 * use for any post type - not just testimonials
+* Uses oik-fields to define the Author Name field and Testimonial type taxonomy
 
-Note: Better by Far is the title of an album by, the legendary Canterbury band, Caravan.
 
 == Installation ==
 1. Upload the contents of the oik-testimonials plugin to the `/wp-content/plugins/oik-testimonials' directory
@@ -39,6 +39,12 @@ Yes - see above
 1. oik-testimonials in action
 
 == Upgrade Notice ==
+= 0.5 = 
+Upgrade if you need to select testimonials by testimonial_type.
+Note: There is no migration tool. You will have to redefine the categories manually.
+Use oik-types to re-define the original taxonomies: testimonial-type, oik_testimonials
+
+
 = 0.4 = 
 Required for oik-fields v1.19.1027
 
@@ -54,6 +60,10 @@ Dependent upon oik base plugin v2.0-alpha and oik-fields
 
 
 == Changelog ==
+= 0.5 =
+* Changed: Renamed custom category "testimonial-types" to "testimonial_types" since custom category names with hyphens cannot be used in shortcodes; shortcodes do not accept hyphenated parameter names.
+* Unchanged: There is no migration facility. You will either have to manually update your entries, or apply an update using phpMyAdmin or the equivalent.
+
 = 0.4 =
 * Added: Implements "oik_set_spam_fields_oik_testimonials" filter 
 * Added: _oik_testimonials_name is now a required field
@@ -72,4 +82,7 @@ Dependent upon oik base plugin v2.0-alpha and oik-fields
 If you want to read more about the oik plugins then please visit the
 [oik plugin](http://www.oik-plugins.com/oik) 
 **"the oik plugin - for often included key-information"**
+
+
+Note: Better by Far is the title of an album by, the legendary Canterbury band, Caravan.
 
