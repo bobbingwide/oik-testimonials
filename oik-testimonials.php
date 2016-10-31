@@ -1,16 +1,16 @@
 <?php
 /*
 Plugin Name: oik-testimonials 
-Plugin URI: http://www.oik-plugins.com/oik-plugins/oik-testimonials.php
+Plugin URI: http://www.oik-plugins.com/oik-plugins/oik-testimonials
 Description: "better by far" oik testimonials 
 Depends: oik base plugin, oik fields
-Version: 0.5
+Version: 0.5.1
 Author: bobbingwide
 Author URI: http://www.oik-plugins.com/author/bobbingwide
 Text Domain: oik-testimonials
 License: GPL2
 
-    Copyright 2012-2014 Bobbing Wide (email : herb@bobbingwide.com )
+    Copyright 2012-2016 Bobbing Wide (email : herb@bobbingwide.com )
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License version 2,
@@ -98,7 +98,7 @@ function oik_testimonials_spam_fields( $fields ) {
 }
  
 /**
- * Implememt "admin_notices" action for oik_testimonials
+ * Implement "admin_notices" action for oik_testimonials
  */ 
 function oik_testimonials_activation() {
   static $plugin_basename = null;

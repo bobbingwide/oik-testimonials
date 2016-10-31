@@ -3,8 +3,8 @@ Contributors: bobbingwide
 Donate link: http://www.oik-plugins.com/oik/oik-donate/
 Tags: testimonial, cycle.all, bw_testimonials, shortcodes, smart, lazy
 Requires at least: 3.9
-Tested up to: 4.0
-Stable tag: 0.5
+Tested up to: 4.6.1
+Stable tag: 0.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,11 +39,13 @@ Yes - see above
 1. oik-testimonials in action
 
 == Upgrade Notice ==
+= 0.5.1 = 
+Tested with WordPress 4.6.1 and oik v3.0.3
+
 = 0.5 = 
 Upgrade if you need to select testimonials by testimonial_type.
 Note: There is no migration tool. You will have to redefine the categories manually.
 Use oik-types to re-define the original taxonomies: testimonial-type, oik_testimonials
-
 
 = 0.4 = 
 Required for oik-fields v1.19.1027
@@ -60,6 +62,9 @@ Dependent upon oik base plugin v2.0-alpha and oik-fields
 
 
 == Changelog ==
+= 0.5.1 =
+* Tested: With WordPress 4.6.1 and oik v3.0.3
+
 = 0.5 =
 * Changed: Renamed custom category "testimonial-types" to "testimonial_types" since custom category names with hyphens cannot be used in shortcodes; shortcodes do not accept hyphenated parameter names.
 * Unchanged: There is no migration facility. You will either have to manually update your entries, or apply an update using phpMyAdmin or the equivalent.
