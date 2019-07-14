@@ -1,16 +1,16 @@
 <?php
 /*
 Plugin Name: oik-testimonials 
-Plugin URI: http://www.oik-plugins.com/oik-plugins/oik-testimonials
+Plugin URI: https://www.oik-plugins.com/oik-plugins/oik-testimonials
 Description: "better by far" oik testimonials 
 Depends: oik base plugin, oik fields
-Version: 0.5.1
+Version: 0.6.0
 Author: bobbingwide
-Author URI: http://www.oik-plugins.com/author/bobbingwide
+Author URI: https://www.oik-plugins.com/author/bobbingwide
 Text Domain: oik-testimonials
 License: GPL2
 
-    Copyright 2012-2016 Bobbing Wide (email : herb@bobbingwide.com )
+    Copyright 2012-2019 Bobbing Wide (email : herb@bobbingwide.com )
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License version 2,
@@ -55,6 +55,7 @@ function oik_register_oik_testimonials() {
   $post_type_args['description'] = __( 'Testimonials', "oik-testimonials" );
   $post_type_args['taxonomies'] = array( "testimonial_type" );
   $post_type_args['has_archive'] = true;
+	$post_type_args['show_in_rest'] = true;
   bw_register_post_type( $post_type, $post_type_args );
   bw_register_field( "_oik_testimonials_name", "text", __( "Author name", "oik-testimonials" ), array( "#required" => true ) ); 
   bw_register_field_for_object_type( "_oik_testimonials_name", $post_type );
@@ -109,7 +110,7 @@ function oik_testimonials_activation() {
       require_once( "admin/oik-activation.php" );
     }
   }  
-  $depends = "oik:2.3,oik-fields";
+  $depends = "oik:3.3,oik-fields:1.51";
   oik_plugin_lazy_activation( __FILE__, $depends, "oik_plugin_plugin_inactive" );
 }
 
