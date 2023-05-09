@@ -10,7 +10,7 @@ Author URI: https://www.oik-plugins.com/author/bobbingwide
 Text Domain: oik-testimonials
 License: GPL2
 
-    Copyright 2012-2019 Bobbing Wide (email : herb@bobbingwide.com )
+    Copyright 2012-2023 Bobbing Wide (email : herb@bobbingwide.com )
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License version 2,
@@ -38,6 +38,154 @@ function oik_testimonials_init( ) {
   bw_register_custom_category( "testimonial_type", null, __( "Testimonial type", "oik-testimonials" ) );
   oik_register_oik_testimonials();
   bw_add_shortcode( "bw_testimonials", "bw_testimonials", oik_path( "shortcodes/oik-testimonials.php", "oik-testimonials" ), false );
+  bw_add_shortcode( "oik_testimonials", "bw_testimonials", oik_path( "shortcodes/oik-testimonials.php", "oik-testimonials" ), false );
+}
+
+function oik_testimonials_init_acf() {
+	register_post_type( 'oik_testimonials', array(
+			'labels' => array(
+				'name' => 'Testimonials',
+				'singular_name' => 'Testimonial',
+				'menu_name' => 'Testimonials',
+				'all_items' => 'All Testimonials',
+				'edit_item' => 'Edit Testimonial',
+				'view_item' => 'View Testimonial',
+				'view_items' => 'View Testimonials',
+				'add_new_item' => 'Add New Testimonial',
+				'new_item' => 'New Testimonial',
+				'parent_item_colon' => 'Parent Testimonial:',
+				'search_items' => 'Search Testimonials',
+				'not_found' => 'No testimonials found',
+				'not_found_in_trash' => 'No testimonials found in the bin',
+				'archives' => 'Testimonial Archives',
+				'attributes' => 'Testimonial Attributes',
+				'insert_into_item' => 'Insert into testimonial',
+				'uploaded_to_this_item' => 'Uploaded to this testimonial',
+				'filter_items_list' => 'Filter testimonials list',
+				'filter_by_date' => 'Filter testimonials by date',
+				'items_list_navigation' => 'Testimonials list navigation',
+				'items_list' => 'Testimonials list',
+				'item_published' => 'Testimonial published.',
+				'item_published_privately' => 'Testimonial published privately.',
+				'item_reverted_to_draft' => 'Testimonial reverted to draft.',
+				'item_scheduled' => 'Testimonial scheduled.',
+				'item_updated' => 'Testimonial updated.',
+				'item_link' => 'Testimonial Link',
+				'item_link_description' => 'A link to a testimonial.',
+			),
+			'description' => 'Testimonials',
+			'public' => true,
+			'show_in_rest' => true,
+			'supports' => array(
+				0 => 'title',
+				1 => 'editor',
+				2 => 'thumbnail',
+			),
+			'taxonomies' => array(
+				0 => 'testimonial_type',
+			),
+			'delete_with_user' => false,
+	) );
+
+	register_taxonomy( 'testimonial_type', array(
+			0 => 'oik_testimonials',
+		), array(
+			'labels' => array(
+				'name' => 'Testimonial types',
+				'singular_name' => 'Testimonial type',
+				'menu_name' => 'Testimonial type',
+				'all_items' => 'All Testimonial type',
+				'edit_item' => 'Edit Testimonial type',
+				'view_item' => 'View Testimonial type',
+				'update_item' => 'Update Testimonial type',
+				'add_new_item' => 'Add New Testimonial type',
+				'new_item_name' => 'New Testimonial type Name',
+				'parent_item' => 'Parent Testimonial type',
+				'parent_item_colon' => 'Parent Testimonial type:',
+				'search_items' => 'Search Testimonial type',
+				'not_found' => 'No testimonial type found',
+				'no_terms' => 'No testimonial type',
+				'filter_by_item' => 'Filter by testimonial type',
+				'items_list_navigation' => 'Testimonial type list navigation',
+				'items_list' => 'Testimonial type list',
+				'back_to_items' => '← Go to testimonial type',
+				'item_link' => 'Testimonial type Link',
+				'item_link_description' => 'A link to a testimonial type',
+			),
+			'public' => true,
+			'hierarchical' => true,
+			'show_in_menu' => true,
+			'show_in_rest' => true,
+		) );
+}
+
+function oik_testimonials_acf_include_fields() {
+	acf_add_local_field_group( array(
+			'key' => 'group_645a613de20b0',
+			'title' => 'Testimonials',
+			'fields' => array(
+				array(
+					'key' => 'field_645a613e44c52',
+					'label' => 'Author name',
+					'name' => '_oik_testimonials_name',
+					'aria-label' => '',
+					'type' => 'text',
+					'instructions' => '',
+					'required' => 1,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'maxlength' => '',
+					'placeholder' => 'Testimonial author name',
+					'prepend' => '',
+					'append' => '',
+				),
+			),
+			'location' => array(
+				array(
+					array(
+						'param' => 'post_type',
+						'operator' => '==',
+						'value' => 'oik_testimonials',
+					),
+				),
+			),
+			'menu_order' => 0,
+			'position' => 'normal',
+			'style' => 'default',
+			'label_placement' => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen' => '',
+			'active' => true,
+			'description' => '',
+			'show_in_rest' => 0,
+		) );
+
+
+	//bw_trace2();
+}
+
+function oik_testimonials_acf_init() {
+	add_shortcode( 'bw_testimonials', 'bw_testimonials_acf' );
+	add_shortcode( 'acf_testimonials', 'bw_testimonials_acf' );
+}
+
+function bw_testimonials_acf( $atts, $content=null, $tag=null ) {
+
+	bw_trace2();
+	$html = "ACF version of $tag";
+	if ( did_action( 'oik_loaded')) {
+		oik_require( "shortcodes/oik-testimonials.php", "oik-testimonials" );
+		$atts = bw_cast_array( $atts );
+		$html = bw_testimonials( $atts, $content, $tag );
+		//$html = call_user_func( 'bw_testimonials', $atts, $content, $tag );
+
+	}
+	return $html;
 }
 
 /** 
@@ -100,6 +248,8 @@ function oik_testimonials_spam_fields( $fields ) {
  
 /**
  * Implement "admin_notices" action for oik_testimonials
+ *
+ * Note: Now supports ACF... but only when it's active!
  */ 
 function oik_testimonials_activation() {
   static $plugin_basename = null;
@@ -109,8 +259,12 @@ function oik_testimonials_activation() {
     if ( !function_exists( "oik_plugin_lazy_activation" ) ) { 
       require_once( "admin/oik-activation.php" );
     }
-  }  
-  $depends = "oik:3.3,oik-fields:1.51";
+  }
+  if ( defined( 'ACF')) {
+	  $depends="oik:3.3";
+  } else {
+	  $depends = "oik,oik-fields";
+  }
   oik_plugin_lazy_activation( __FILE__, $depends, "oik_plugin_plugin_inactive" );
 }
 
@@ -118,6 +272,12 @@ function oik_testimonials_activation() {
  * Function performed when oik-testimonials.php is loaded 
  */
 function oik_testimonials_plugin_loaded() {
+
+	if ( defined( 'ACF') ) {
+		add_action( 'init', "oik_testimonials_init_acf");
+		add_action( 'acf/include_fields', 'oik_testimonials_acf_include_fields');
+		add_action( 'acf/init', 'oik_testimonials_acf_init');
+	}
   add_action( 'oik_fields_loaded', 'oik_testimonials_init' );
   add_action( "oik_admin_menu", "oik_testimonials_admin_menu" );
   add_action( "admin_notices", "oik_testimonials_activation" );
