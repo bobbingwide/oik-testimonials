@@ -37,8 +37,12 @@ License: GPL2
 function oik_testimonials_init( ) {
   bw_register_custom_category( "testimonial_type", null, __( "Testimonial type", "oik-testimonials" ) );
   oik_register_oik_testimonials();
-  bw_add_shortcode( "bw_testimonials", "bw_testimonials", oik_path( "shortcodes/oik-testimonials.php", "oik-testimonials" ), false );
-  bw_add_shortcode( "oik_testimonials", "bw_testimonials", oik_path( "shortcodes/oik-testimonials.php", "oik-testimonials" ), false );
+}
+
+function oik_testimonials_register_oik_shortcodes() {
+	bw_add_shortcode( "bw_testimonials", "bw_testimonials", oik_path( "shortcodes/oik-testimonials.php", "oik-testimonials" ), false );
+	bw_add_shortcode( "oik_testimonials", "bw_testimonials", oik_path( "shortcodes/oik-testimonials.php", "oik-testimonials" ), false );
+	add_shortcode( 'acf_testimonials', 'bw_testimonials_acf' );
 }
 
 function oik_testimonials_init_acf() {
@@ -181,7 +185,7 @@ function bw_testimonials_acf( $atts, $content=null, $tag=null ) {
 	if ( did_action( 'oik_loaded')) {
 		oik_require( "shortcodes/oik-testimonials.php", "oik-testimonials" );
 		$atts = bw_cast_array( $atts );
-		$html = bw_testimonials( $atts, $content, $tag );
+		$html = bw_testimonials( $atts, $content, $tag . '-ACF' );
 		//$html = call_user_func( 'bw_testimonials', $atts, $content, $tag );
 
 	}
@@ -278,17 +282,11 @@ function oik_testimonials_plugin_loaded() {
 		add_action( 'acf/include_fields', 'oik_testimonials_acf_include_fields');
 		add_action( 'acf/init', 'oik_testimonials_acf_init');
 	}
-  add_action( 'oik_fields_loaded', 'oik_testimonials_init' );
-  add_action( "oik_admin_menu", "oik_testimonials_admin_menu" );
-  add_action( "admin_notices", "oik_testimonials_activation" );
-  add_filter( "oik_set_spam_fields_oik_testimonials", "oik_testimonials_spam_fields" );
+	add_action( 'oik_loaded', 'oik_testimonials_register_oik_shortcodes' );
+	add_action( 'oik_fields_loaded', 'oik_testimonials_init' );
+	add_action( "oik_admin_menu", "oik_testimonials_admin_menu" );
+	add_action( "admin_notices", "oik_testimonials_activation" );
+	add_filter( "oik_set_spam_fields_oik_testimonials", "oik_testimonials_spam_fields" );
 }
 
 oik_testimonials_plugin_loaded();
-
-
-
-
-  
-
- 
