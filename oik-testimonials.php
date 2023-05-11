@@ -178,6 +178,12 @@ function oik_testimonials_acf_init() {
 	add_shortcode( 'acf_testimonials', 'bw_testimonials_acf' );
 }
 
+function oik_testimonials_register_blocks() {
+
+	$registered = register_block_type( __DIR__ . '/blocks/acf-testimonials' );
+	bw_trace2( $registered, 'registered?', false );
+
+}
 function bw_testimonials_acf( $atts, $content=null, $tag=null ) {
 
 	bw_trace2();
@@ -281,6 +287,8 @@ function oik_testimonials_plugin_loaded() {
 		add_action( 'init', "oik_testimonials_init_acf");
 		add_action( 'acf/include_fields', 'oik_testimonials_acf_include_fields');
 		add_action( 'acf/init', 'oik_testimonials_acf_init');
+		add_action( 'acf/init', 'oik_testimonials_register_blocks');
+
 	}
 	add_action( 'oik_loaded', 'oik_testimonials_register_oik_shortcodes' );
 	add_action( 'oik_fields_loaded', 'oik_testimonials_init' );
