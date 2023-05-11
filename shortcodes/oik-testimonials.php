@@ -1,4 +1,4 @@
-<?php // (C) Copyright Bobbing Wide 2013
+<?php // (C) Copyright Bobbing Wide 2013, 2023
 
 /** 
  * Return the next unique ID for the testimonial selector
@@ -40,7 +40,7 @@ function _bw_testimonials_cycle_parms() {
  * Create the jQuery code to cycle the selection, including the starting div
  * This code uses jQuery cycle.all 
  */
-function bw_testimonials_jq( $atts ) {
+function bw_testimonials_jq( $atts, $tag ) {
   oik_require( "shortcodes/oik-jquery.php" );
   $debug = bw_array_get( $atts, "debug", false );
   $script = bw_array_get( $atts, "script", "cycle.all" );
@@ -52,7 +52,7 @@ function bw_testimonials_jq( $atts ) {
   $selector = bw_testimonial_id();
   $parms = _bw_testimonials_cycle_parms();
   bw_jquery( "#$selector", $method, $parms );
-  $class = bw_array_get( $atts, "class", "bw_testimonial" );
+  $class = bw_array_get( $atts, "class", $tag );
   sdiv( $class, $selector );
 }
 
@@ -67,11 +67,12 @@ function bw_testimonials_jq( $atts ) {
  * @return expanded shortcode
  */
 function bw_testimonials( $atts=null, $content=null, $tag=null ) {
-  bw_testimonials_jq( $atts ); 
+  bw_testimonials_jq( $atts, $tag );
   $atts['numberposts'] = bw_array_get( $atts, "numberposts", 5 );
   $atts['post_type'] = bw_array_get( $atts, "post_type", "oik_testimonials" );
   $atts['orderby'] = bw_array_get( $atts, "orderby", "rand" );
   $atts['post_parent'] = 0;
+  $atts['format'] = bw_array_get( $atts, 'format', 'LE_M' );
   oik_require( "shortcodes/oik-pages.php" );
   e( bw_pages( $atts ));
   ediv();
