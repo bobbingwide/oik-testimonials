@@ -180,7 +180,7 @@ function oik_testimonials_acf_init() {
 
 function oik_testimonials_register_blocks() {
 
-	$registered = register_block_type( __DIR__ . '/blocks/acf-testimonials' );
+	$registered = register_block_type( __DIR__ . '/blocks/acf-cycler' );
 	bw_trace2( $registered, 'registered?', false );
 
 }
