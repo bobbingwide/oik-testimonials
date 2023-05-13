@@ -110,7 +110,7 @@ function acf_cycler_innerblock_selector( $wp_block ) {
 }
 
 /**
- * oik-cycler block template.
+ * acf-cycler block template.
  *
  * @param array $block The block settings and attributes.
  * @param string $content The block inner HTML (empty).
