@@ -16,17 +16,16 @@ bw_trace2( $block, "block", false);
 bw_trace2( $content, "content", false );
 bw_trace2( $context, "context", false );
 
-
-
 $classes = ['acf-author-name'];
 if( !empty( $block['className'] ) ) {
 	$classes = array_merge( $classes, explode( ' ', $block['className'] ) );
 }
+$classes = implode( ' ', $classes);
 //$anchor = '';
 //if( !empty( $block['anchor'] ) )
 //	$anchor = ' id="' . sanitize_title( $block['anchor'] ) . '"';
 
-echo '<div class="$classes">';
+echo "<div class=\"$classes\">";
 $author_name = get_field( '_oik_testimonials_name', $post_id );
 echo esc_html( $author_name );
 echo '</div>';
