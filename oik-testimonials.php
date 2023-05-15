@@ -124,6 +124,7 @@ function oik_testimonials_init_acf() {
 }
 
 function oik_testimonials_acf_include_fields() {
+	/*
 	acf_add_local_field_group( array(
 			'key' => 'group_645a613de20b0',
 			'title' => 'Testimonials',
@@ -168,7 +169,7 @@ function oik_testimonials_acf_include_fields() {
 			'description' => '',
 			'show_in_rest' => 0,
 		) );
-
+	*/
 
 	//bw_trace2();
 }
@@ -183,6 +184,8 @@ function oik_testimonials_register_blocks() {
 	$registered = register_block_type( __DIR__ . '/blocks/acf-cycler' );
 	bw_trace2( $registered, 'registered?', false );
 	$registered = register_block_type( __DIR__ . '/blocks/acf-author-name' );
+	bw_trace2( $registered, 'registered?', false );
+	$registered = register_block_type( __DIR__ . '/blocks/acf-field' );
 	bw_trace2( $registered, 'registered?', false );
 
 }
