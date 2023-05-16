@@ -34,6 +34,14 @@ $classes = implode( ' ', $classes);
 //	$anchor = ' id="' . sanitize_title( $block['anchor'] ) . '"';
 
 echo "<div class=\"$classes\">";
-$field_name = get_field( 'field-name');
+$field_name = get_field( 'acf-field-name');
+/**
+ * Cater for blocks that haven't been updated to use acf-field-name
+ */
+if ( !$field_name) {
+	$field_name = get_field( 'field-name');
+	echo "Falling back to using 'field-name'. Update block to use 'acf-field-name'";
+
+}
 acf_display_field( $field_name, $post_id );
 echo '</div>';
