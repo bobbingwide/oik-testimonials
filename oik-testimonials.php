@@ -129,20 +129,7 @@ function oik_testimonials_init_acf() {
  * @return void
  */
 function oik_testimonials_acf_include_fields() {
-	$groups = acf_get_local_field_groups();
-	bw_trace2( $groups, "local field groups");
-	if ( acf_is_local_field_group('group_645a613de20b1')) {
-		//gob();
-		return;
-	}
-
-	$field_groups = oik_testimonials_whats_in_ACF();
-	bw_trace2( $field_groups, 'field grups', false  );
-	//gob();
-
-	$register_testimonials_field_group = oik_maybe_register_testimonials();
-	if ( $register_testimonials_field_group ) {
-		acf_add_local_field_group( array(
+	oik_maybe_add_local_field_group( array(
 			'key'                  =>'group_645a613de20b1',
 			'title'                =>'Testimonials',
 			'fields'               =>array(
@@ -186,9 +173,6 @@ function oik_testimonials_acf_include_fields() {
 			'description'          =>'',
 			'show_in_rest'         =>1,
 		) );
-	}
-
-
 	acf_add_local_field_group( array(
 			'key' => 'group_645e28e943198',
 			'title' => 'acf-cycler',
@@ -265,8 +249,7 @@ function oik_testimonials_acf_include_fields() {
 			'description' => '',
 			'show_in_rest' => 0,
 		) );
-
-		acf_add_local_field_group( array(
+	acf_add_local_field_group( array(
 			'key' => 'group_645f589a8cade',
 			'title' => 'acf-field',
 			'fields' => array(
@@ -310,53 +293,68 @@ function oik_testimonials_acf_include_fields() {
 			'description' => '',
 			'show_in_rest' => 0,
 		) );
-
-
-
-
-
-	//bw_trace2();
 }
 
-function oik_maybe_register_testimonials() {
-	$register        =true;
+function oik_is_field_group_registered( $title ) {
+	$registered = false;
 	$raw_field_groups=acf_get_raw_field_groups();
 	bw_trace2( $raw_field_groups, 'raw_field_groups', false );
 	foreach ( $raw_field_groups as $raw_field_group ) {
-		if ( $raw_field_group['title'] === 'Testimonials' ) {
-			$register=false;
-
+		if ( $raw_field_group['title'] === $title ) {
+			$registered = true;
 		}
 	}
-
-	return $register;
+	return $registered;
 }
 
-	function oik_testimonials_acf_init() {
+/**
+ * Adds a local field group if the group's title isn't already registered.
+ *
+ * @param $group
+ * @return void
+ */
+function oik_maybe_add_local_field_group( $group ) {
+	$registered = oik_is_field_group_registered( $group['title']);
+	if ( !$registered ) {
+		acf_add_local_field_group( $group );
+	}
+}
+
+function oik_testimonials_acf_init() {
 	add_shortcode( 'bw_testimonials', 'bw_testimonials_acf' );
 	add_shortcode( 'acf_testimonials', 'bw_testimonials_acf' );
 }
 
+/**
+ * Registers oik-testimonials ACF blocks.
+ *
+ * @return void
+ */
 function oik_testimonials_register_blocks() {
-
 	$registered = register_block_type( __DIR__ . '/blocks/acf-cycler' );
 	bw_trace2( $registered, 'registered?', false );
 	$registered = register_block_type( __DIR__ . '/blocks/acf-author-name' );
 	bw_trace2( $registered, 'registered?', false );
 	$registered = register_block_type( __DIR__ . '/blocks/acf-field' );
 	bw_trace2( $registered, 'registered?', false );
-
 }
-function bw_testimonials_acf( $atts, $content=null, $tag=null ) {
 
+/**
+ * Implements bw_testimonials and acf_testimonials shortcodes for ACF
+ *
+ * @param $atts
+ * @param $content
+ * @param $tag
+ *
+ * @return expanded|string
+ */
+function bw_testimonials_acf( $atts, $content=null, $tag=null ) {
 	bw_trace2();
 	$html = "ACF version of $tag";
 	if ( did_action( 'oik_loaded')) {
 		oik_require( "shortcodes/oik-testimonials.php", "oik-testimonials" );
 		$atts = bw_cast_array( $atts );
 		$html = bw_testimonials( $atts, $content, $tag . '-ACF' );
-		//$html = call_user_func( 'bw_testimonials', $atts, $content, $tag );
-
 	}
 	return $html;
 }
@@ -443,33 +441,43 @@ function oik_testimonials_activation() {
   oik_plugin_lazy_activation( __FILE__, $depends, "oik_plugin_plugin_inactive" );
 }
 
+/**
+ * Debug function discovers information held in ACF.
+ *
+ * Note: I used this when working out which ACF functions may be used to implement oik_maybe_add_local_field_group()
+ *
+ * @return void
+ */
 function oik_testimonials_whats_in_ACF() {
-	return;
+
 	$local_enabled = acf_is_local_enabled();
-	bw_trace2( $local_enabled, "local enabled?", false);
+	bw_trace2( $local_enabled, "local enabled?", false, BW_TRACE_DEBUG);
 
 	$store = acf_get_local_store( '', 'acf-field-group');
-		bw_trace2( $store, "store", false );
+	bw_trace2( $store, "store", false, BW_TRACE_DEBUG );
+
 	$count = acf_count_local_field_groups();
-	bw_trace2( $count, "count of local field groups", false );
+	bw_trace2( $count, "count of local field groups", false, BW_TRACE_DEBUG );
 
-	/*
-	$field_groups = acf_get_field_groups(
-		array(
-						'post_type' => 'oik-testimonials',
-		)
-	);
-	bw_trace2( $field_groups, 'field_groups', false );
-	*/
+	$groups = acf_get_local_field_groups();
+	bw_trace2( $groups, "local field groups", false, BW_TRACE_DEBUG );
+
 	$raw_field_groups = acf_get_raw_field_groups();
-	bw_trace2( $raw_field_groups, 'raw_field_groups', false );
+	bw_trace2( $raw_field_groups, 'raw_field_groups', false, BW_TRACE_DEBUG );
 
-
-	return $raw_field_groups;
 }
 
 /**
- * Function performed when oik-testimonials.php is loaded 
+ * Function performed when oik-testimonials.php is loaded
+ *
+ * If using ACF, use the ACF method of registering things:
+ * - on `init` register the CPT and taxonomy
+ * - on `acf/include_fields` register the Testimonials Field Group, if not already registered
+ * - on `acf/init` register the shortcodes for ACF
+ * - on `acf/init` register the blocks
+ *
+ * Always:
+ * - respond to other actions and filters using oik logic with some changes if ACF is activated.
  */
 function oik_testimonials_plugin_loaded() {
 
@@ -485,7 +493,7 @@ function oik_testimonials_plugin_loaded() {
 	add_action( "oik_admin_menu", "oik_testimonials_admin_menu" );
 	add_action( "admin_notices", "oik_testimonials_activation" );
 	add_filter( "oik_set_spam_fields_oik_testimonials", "oik_testimonials_spam_fields" );
-	add_action( 'oik_loaded', 'oik_testimonials_whats_in_ACF');
+	//add_action( 'oik_loaded', 'oik_testimonials_whats_in_ACF');
 }
 
 oik_testimonials_plugin_loaded();
