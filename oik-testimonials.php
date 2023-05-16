@@ -255,12 +255,12 @@ function oik_testimonials_acf_include_fields() {
 			'fields' => array(
 				array(
 					'key' => 'field_645f589a88304',
-					'label' => 'Field name',
-					'name' => 'field-name',
+					'label' => 'ACF Field name',
+					'name' => 'acf-field-name',
 					'aria-label' => '',
 					'type' => 'text',
-					'instructions' => '',
-					'required' => 0,
+					'instructions' => 'Type the field name of the ACF field to display',
+					'required' => 1,
 					'conditional_logic' => 0,
 					'wrapper' => array(
 						'width' => '',
@@ -269,7 +269,7 @@ function oik_testimonials_acf_include_fields() {
 					),
 					'default_value' => '_oik_testimonials_name',
 					'maxlength' => '',
-					'placeholder' => '',
+					'placeholder' => 'ACF_field_name',
 					'prepend' => '',
 					'append' => '',
 				),
