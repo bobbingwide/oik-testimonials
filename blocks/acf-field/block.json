@@ -6,7 +6,8 @@
   "icon": "forms",
   "keywords": ["generic", "field", "acf"],
   "acf": {
-    "mode": "preview",
+    "mode": "edit",
     "renderTemplate": "acf-field.php"
-  }
+  },
+  "example": []
 }
