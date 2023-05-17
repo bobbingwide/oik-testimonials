@@ -124,11 +124,14 @@ function oik_testimonials_init_acf() {
 }
 
 /**
- * Registers the Testimonials field group if not already registered.
+ * Registers the required field groups if not already registered.
  *
  * @return void
  */
 function oik_testimonials_acf_include_fields() {
+	oik_require( 'includes/acf-field-names.php', 'oik-testimonials');
+	$acf_field_name_field = acf_build_acf_field_name_field();
+	$acf_cycler_field = acf_build_acf_cycler_field();
 	oik_maybe_add_local_field_group( array(
 			'key'                  =>'group_645a613de20b1',
 			'title'                =>'Testimonials',
@@ -177,58 +180,8 @@ function oik_testimonials_acf_include_fields() {
 			'key' => 'group_645e28e943198',
 			'title' => 'acf-cycler',
 			'fields' => array(
-				array(
-					'key' => 'field_645e28e9f47da',
-					'label' => 'Cycle Transition Effect',
-					'name' => 'fx',
-					'aria-label' => '',
-					'type' => 'select',
-					'instructions' => '',
-					'required' => 0,
-					'conditional_logic' => 0,
-					'wrapper' => array(
-						'width' => '',
-						'class' => '',
-						'id' => '',
-					),
-					'choices' => array(
-						'fade' => 'fade',
-						'blindX' => 'blindX',
-						'blindY' => 'blindY',
-						'blindZ' => 'blindZ',
-						'cover' => 'cover',
-						'curtainX' => 'curtainX',
-						'curtainY' => 'curtainY',
-						'fadeZoom' => 'fadeZoom',
-						'growX' => 'growX',
-						'growY' => 'growY',
-						'none' => 'none',
-						'scrollUp' => 'scrollUp',
-						'scrollDown' => 'scrollDown',
-						'scrollLeft' => 'scrollLeft',
-						'scrollRight' => 'scrollRight',
-						'scrollHorz' => 'scrollHorz',
-						'scrollVert' => 'scrollVert',
-						'shuffle' => 'shuffle',
-						'slideX' => 'slideX',
-						'slideY' => 'slideY',
-						'toss' => 'toss',
-						'turnUp' => 'turnUp',
-						'turnDown' => 'turnDown',
-						'turnLeft' => 'turnLeft',
-						'turnRight' => 'turnRight',
-						'uncover' => 'uncover',
-						'wipe' => 'wipe',
-						'zoom' => 'zoom',
-					),
-					'default_value' => 'fade',
-					'return_format' => 'value',
-					'multiple' => 0,
-					'allow_null' => 0,
-					'ui' => 0,
-					'ajax' => 0,
-					'placeholder' => '',
-				),
+				$acf_cycler_field
+
 			),
 			'location' => array(
 				array(
@@ -253,26 +206,7 @@ function oik_testimonials_acf_include_fields() {
 			'key' => 'group_645f589a8cade',
 			'title' => 'acf-field',
 			'fields' => array(
-				array(
-					'key' => 'field_645f589a88304',
-					'label' => 'ACF Field name',
-					'name' => 'acf-field-name',
-					'aria-label' => '',
-					'type' => 'text',
-					'instructions' => 'Type the field name of the ACF field to display',
-					'required' => 1,
-					'conditional_logic' => 0,
-					'wrapper' => array(
-						'width' => '',
-						'class' => '',
-						'id' => '',
-					),
-					'default_value' => '_oik_testimonials_name',
-					'maxlength' => '',
-					'placeholder' => 'ACF_field_name',
-					'prepend' => '',
-					'append' => '',
-				),
+				$acf_field_name_field
 			),
 			'location' => array(
 				array(
