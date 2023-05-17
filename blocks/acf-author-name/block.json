@@ -8,5 +8,6 @@
   "acf": {
     "mode": "preview",
     "renderTemplate": "acf-author-name.php"
-  }
+  },
+  "example": []
 }
