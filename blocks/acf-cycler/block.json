@@ -6,8 +6,9 @@
   "icon": "slides",
   "keywords": ["fade", "cycler", "acf"],
   "acf": {
-    "mode": "preview",
+    "mode": "edit",
     "renderTemplate": "acf-cycler.php"
   },
-  "style": [ "file:./acf-cycler.css" ]
+  "style": [ "file:./acf-cycler.css" ],
+  "example": []
 }
