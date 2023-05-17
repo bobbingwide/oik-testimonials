@@ -24,25 +24,75 @@ function acf_get_possible_field_names( $field_name, $post_id ) {
 	$field_groups = acf_get_field_groups();
 
 	bw_trace2($field_groups, 'field groups', false );
+	// @TODO = filter field groups to include those with location matching post_type. ie exclude just block types
 	$fields = [];
 	foreach ( $field_groups as $field_group ) {
-		$raw_fields = acf_get_fields( $field_group['ID']);
-		bw_trace2( $raw_fields, 'raw_fields', false );
-		foreach ( $raw_fields as $raw_field ) {
-			$field_select_label = [];
-			$field_select_label[] = $raw_field['label'];
-			$field_select_label[] = '-';
-			$field_select_label[] = $field_group['title'];
-			$field_select_label[] = '-';
-			$field_select_label[] = $raw_field['name'] . '/' . $raw_field['key'];
+		if ( acf_process_field_group( $field_group )) {
+			$raw_fields=acf_get_fields( $field_group['ID'] );
+			bw_trace2( $raw_fields, 'raw_fields', false );
+			foreach ( $raw_fields as $raw_field ) {
+				$field_select_label  =[];
+				$field_select_label[]=$raw_field['label'];
+				$field_select_label[]='-';
+				$field_select_label[]=$field_group['title'];
+				if ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) {
+					$field_select_label[]='-';
+					$field_select_label[]=$raw_field['name'] . '/' . $raw_field['key'];
+				}
 
-			//$field_select_label[] = $raw_field['key'];
+				//$field_select_label[] = $raw_field['key'];
 
-			$fields[ $raw_field['name'] ] = implode( ' ', $field_select_label );
+				$fields[ $raw_field['name'] ]=implode( ' ', $field_select_label );
+			}
 		}
 	}
 	return $fields;
 
+}
+
+/**
+ * Checks if the Field Group is relevant.
+ *
+ * We'll process this field group if any location param is 'post_type'
+ * It doesn't matter what that operator or value fields are set to,
+ * since we don't care about the actual value.
+ *
+ * - See how this is done for post meta.
+ * - Note: post_meta already knows the post_type.
+ *
+ *  [location] => Array
+
+            [0] => Array
+
+                [0] => Array
+
+                    [param] => (string) "post_type"
+                    [operator] => (string) "=="
+                    [value] => (string) "oik_testimonials"
+
+
+            [1] => Array
+
+                [0] => Array
+
+                    [param] => (string) "post_type"
+                    [operator] => (string) "=="
+                    [value] => (string) "page"
+
+ */
+
+function acf_process_field_group( $field_group ) {
+
+	$process = false;
+	$rules = $field_group['location'];
+	foreach ( $rules as $ruleset ) {
+		foreach ( $ruleset as $rule ) {
+			if ( 'post_type' === $rule['param'] ) {
+				$process=true;
+			}
+		}
+	}
+	return $process;
 }
 
 /**
@@ -78,7 +128,7 @@ function acf_build_acf_field_name_field() {
 		'aria-label' => '',
 		'type' => 'text',
 
-		'instructions' => 'Type the field name of the ACF field to display',
+		'instructions' => 'Select the field name of the ACF field to display',
 		'required' => 1,
 		'conditional_logic' => 0,
 		'wrapper' => array(
@@ -86,7 +136,7 @@ function acf_build_acf_field_name_field() {
 			'class' => '',
 			'id' => '',
 		),
-		'default_value' => '_oik_testimonials_name',
+		'default_value' => '',
 		'maxlength' => '',
 		'placeholder' => 'ACF_field_name',
 		'prepend' => '',
