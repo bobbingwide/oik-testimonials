@@ -227,6 +227,7 @@ function oik_testimonials_acf_include_fields() {
 			'description' => '',
 			'show_in_rest' => 0,
 		) );
+	add_filter( 'acf/prepare_field/name=acf-field-name', 'acf_prepare_field_name_acf_field_name' );
 }
 
 function oik_is_field_group_registered( $title ) {
