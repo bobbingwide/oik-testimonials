@@ -43,6 +43,9 @@ function acf_display_field( $field_name, $post_id ) {
 			case 'file':
 				acf_display_field_file( $field, $field_info );
 				break;
+			case 'wysiwyg':
+				acf_display_field_wysiwyg( $field, $field_info );
+				break;
 			default:
 				echo esc_html( $field );
 		}
@@ -177,4 +180,19 @@ function acf_display_field_file( $field, $field_info ) {
 		default:
 			echo "<a href=\"$field\">Download File</a>";
 	}
+}
+
+/**
+ * Displays an ACF WYSIWYG field.
+ *
+ * We just echo the $field since it's already been processed through `acf_the_content`.
+ *
+ * @link https://www.advancedcustomfields.com/resources/wysiwyg
+
+ * @param $field
+ * @param $field_info
+ * @return void
+ */
+function acf_display_field_wysiwyg( $field, $field_info ) {
+	echo $field;
 }
