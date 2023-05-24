@@ -46,6 +46,9 @@ function acf_display_field( $field_name, $post_id ) {
 			case 'wysiwyg':
 				acf_display_field_wysiwyg( $field, $field_info );
 				break;
+			case 'oembed':
+				acf_display_field_oembed( $field, $field_info );
+				break;
 			default:
 				echo esc_html( $field );
 		}
@@ -195,4 +198,21 @@ function acf_display_field_file( $field, $field_info ) {
  */
 function acf_display_field_wysiwyg( $field, $field_info ) {
 	echo $field;
+	wp_enqueue_script( 'wp-embed');
+}
+
+/**
+ * Displays an ACF oEmbed field.
+ *
+ * Echo the $field and enqueue the wp-embed script for the front end.
+ *
+ * @link https://www.advancedcustomfields.com/resources/oembed
+
+ * @param $field
+ * @param $field_info
+ * @return void
+ */
+function acf_display_field_oembed( $field, $field_info ) {
+	echo $field;
+	wp_enqueue_script( 'wp-embed');
 }
