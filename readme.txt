@@ -20,6 +20,11 @@ Features:
 * use for any post type - not just testimonials
 * Uses oik-fields to define the Author Name field and Testimonial type taxonomy
 
+acf-field block with ACF Pro
+
+If you want to alter the output from the oik-testimonials/acf-field block
+then you can hook into the `render_block_oik-testimonials/acf-field` filter.
+
 
 == Installation ==
 1. Upload the contents of the oik-testimonials plugin to the `/wp-content/plugins/oik-testimonials' directory
