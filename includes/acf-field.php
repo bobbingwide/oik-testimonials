@@ -89,9 +89,17 @@ function acf_display_field( $field_name, $field_info, $post_id ) {
 			case 'gallery':
 				acf_display_field_gallery( $field, $field_info );
 				break;
+			case 'checkbox':
+				$field_info['multiple'] = 1;
 			case 'select':
 				acf_display_field_select( $field, $field_info );
 				break;
+			case 'radio':
+			case 'button_group':
+				$field_info['multiple'] = 0;
+				acf_display_field_select( $field, $field_info );
+				break;
+
 			default:
 				echo esc_html( $field );
 		}
@@ -289,8 +297,13 @@ function acf_display_field_gallery( $field, $field_info ) {
  * Displays an ACF select field.
  *
  * Displays the selected value(s) of a select field.
+ * Also used for checkbox, which is always 'multiple'.
+ * And radio and button_group which are never multiple.
  *
  * @link https://www.advancedcustomfields.com/resources/select/
+ * @link https://www.advancedcustomfields.com/resources/checkbox/
+ * @link https://www.advancedcustomfields.com/resources/radio-button/
+ * @link https://www.advancedcustomfields.com/resources/button-group/
 
  * @param $field
  * @param $field_info
