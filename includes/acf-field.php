@@ -89,6 +89,9 @@ function acf_display_field( $field_name, $field_info, $post_id ) {
 			case 'gallery':
 				acf_display_field_gallery( $field, $field_info );
 				break;
+			case 'select':
+				acf_display_field_select( $field, $field_info );
+				break;
 			default:
 				echo esc_html( $field );
 		}
@@ -281,3 +284,56 @@ function acf_display_field_gallery( $field, $field_info ) {
 	}
 
 }
+
+/**
+ * Displays an ACF select field.
+ *
+ * Displays the selected value(s) of a select field.
+ *
+ * @link https://www.advancedcustomfields.com/resources/select/
+
+ * @param $field
+ * @param $field_info
+ * @return void
+ */
+function acf_display_field_select( $field, $field_info ) {
+	bw_trace2();
+	$value = null;
+	switch ( $field_info['return_format'] ) {
+		case 'value':
+			if ( $field_info['multiple'] ) {
+				$values = [];
+				foreach ( $field as $value ) {
+					$values[] = $field_info['choices'][ $value ];
+				}
+				$value = implode( ',', $values );
+			} else {
+				$value = $field_info['choices'][ $field ];
+			}
+			break;
+
+		case 'label':
+			if ( $field_info['multiple'] ) {
+				$value = implode( ',', $field );
+			} else {
+				$value = $field;
+			}
+			break;
+
+		case 'array':
+
+			$values = [];
+			if ( $field_info['multiple'] ) {
+				foreach ( $field as $both ) {
+					$values[] = $both['label'];
+				}
+				$value = implode( ',', $values ) ;
+			} else {
+				$value = $field['label'] ;
+			}
+			break;
+	}
+	echo esc_html( $value );
+
+}
+
