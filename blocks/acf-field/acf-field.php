@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * acf-field block template.
  *
@@ -22,26 +21,4 @@ bw_trace2( $context, "context", false );
 if ( !function_exists( 'acf_display_field')) {
 	oik_require( 'includes/acf-field.php', 'oik-testimonials' );
 }
-
-
-$classes = ['acf-field'];
-if( !empty( $block['className'] ) ) {
-	$classes = array_merge( $classes, explode( ' ', $block['className'] ) );
-}
-$classes = implode( ' ', $classes);
-//$anchor = '';
-//if( !empty( $block['anchor'] ) )
-//	$anchor = ' id="' . sanitize_title( $block['anchor'] ) . '"';
-
-echo "<div class=\"$classes\">";
-$field_name = get_field( 'acf-field-name');
-/**
- * Cater for blocks that haven't been updated to use acf-field-name
- */
-if ( !$field_name) {
-	$field_name = get_field( 'field-name');
-	echo "Falling back to using 'field-name'. Update block to use 'acf-field-name'";
-
-}
-acf_display_field( $field_name, $post_id );
-echo '</div>';
+acf_display_field_block( $block, $content, $is_preview, $post_id, $wp_block );

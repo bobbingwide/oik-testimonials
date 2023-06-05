@@ -9,5 +9,6 @@
     "mode": "edit",
     "renderTemplate": "acf-field.php"
   },
+  "style": [ "file:./acf-field.css" ],
   "example": []
 }

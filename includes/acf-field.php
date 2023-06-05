@@ -7,6 +7,43 @@
  */
 
 /**
+ * Displays classes for ACF field block.
+ */
+function acf_display_field_block_classes( $field_name, $field_type, $block ) {
+	$classes=[ 'acf-field' ];
+	$classes[] = $field_name;
+	$classes[] = $field_type;
+	if ( ! empty( $block['className'] ) ) {
+		$classes=array_merge( $classes, explode( ' ', $block['className'] ) );
+	}
+	$classes=implode( ' ', $classes );
+//$anchor = '';
+//if( !empty( $block['anchor'] ) )
+//	$anchor = ' id="' . sanitize_title( $block['anchor'] ) . '"';
+
+	echo "<div class=\"$classes\">";
+}
+
+/**
+ * Displays an ACF field block
+ */
+function acf_display_field_block( $block, $content, $is_preview, $post_id, $wp_block ) {
+	$field_name = get_field( 'acf-field-name');
+	/**
+	 * Cater for blocks that haven't been updated to use acf-field-name
+	 */
+	if ( !$field_name) {
+		$field_name = get_field( 'field-name');
+		echo "Falling back to using 'field-name'. Update block to use 'acf-field-name'";
+
+	}
+	$field_info= get_field_object( $field_name, $post_id );
+	acf_display_field_block_classes( $field_name, $field_info['type'], $block);
+	acf_display_field( $field_name, $field_info, $post_id );
+	echo '</div>';
+
+}
+/**
  * Generic display of an ACF field.
  *
  * - This logic should attempt to cater for all different field types.
@@ -18,12 +55,12 @@
  *
  * @return void*
  */
-function acf_display_field( $field_name, $post_id ) {
+function acf_display_field( $field_name, $field_info, $post_id ) {
 
 	//$field_name=get_field( 'field-name' );
 	$field     =get_field( $field_name, $post_id );
 	//echo $field;
-	$field_info= get_field_object( $field_name, $post_id );
+
 	bw_trace2( $field_info, 'field_info');
 	if ( $field_info ) {
 		switch ( $field_info['type'] ) {
@@ -48,6 +85,9 @@ function acf_display_field( $field_name, $post_id ) {
 				break;
 			case 'oembed':
 				acf_display_field_oembed( $field, $field_info );
+				break;
+			case 'gallery':
+				acf_display_field_gallery( $field, $field_info );
 				break;
 			default:
 				echo esc_html( $field );
@@ -215,4 +255,29 @@ function acf_display_field_wysiwyg( $field, $field_info ) {
 function acf_display_field_oembed( $field, $field_info ) {
 	echo $field;
 	wp_enqueue_script( 'wp-embed');
+}
+
+/**
+ * Displays an ACF gallery field.
+ *
+ * Displays an array of images in a gallery.
+ * Uses the logic to display an image but within a list.
+ *
+ * @link https://www.advancedcustomfields.com/add-ons/gallery-field/
+
+ * @param $field
+ * @param $field_info
+ * @return void
+ */
+function acf_display_field_gallery( $field, $field_info ) {
+	if ( count( $field ) ) {
+		echo '<ul>';
+		foreach ( $field as $image ) {
+			echo '<li>';
+			acf_display_field_image( $image, $field_info );
+			echo '</li>';
+		}
+		echo '</ul>';
+	}
+
 }
