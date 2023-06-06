@@ -100,6 +100,9 @@ function acf_display_field( $field_name, $field_info, $post_id ) {
 				acf_display_field_select( $field, $field_info );
 				break;
 
+			case 'true_false':
+				acf_display_field_true_false( $field, $field_info );
+				break;
 			default:
 				echo esc_html( $field );
 		}
@@ -348,5 +351,23 @@ function acf_display_field_select( $field, $field_info ) {
 	}
 	echo esc_html( $value );
 
+}
+
+/**
+ * Displays an ACF true_false field.
+ *
+ *
+ * @link https://www.advancedcustomfields.com/resources/select/
+ *
+ * @param $field
+ * @param $field_info
+ * @return void
+ */
+function acf_display_field_true_false( $field, $field_info ) {
+	if ( $field) {
+		echo "Yes";
+	} else {
+		echo "No";
+	}
 }
 
