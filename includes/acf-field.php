@@ -118,6 +118,9 @@ function acf_display_field( $field_name, $field_info, $post_id ) {
 			case 'page_link':
 				acf_display_field_page_link( $field, $field_info, $post_id );
 				break;
+			case 'relationship':
+				acf_display_field_relationship( $field, $field_info, $post_id );
+				break;
 
 			default:
 				echo esc_html( $field );
@@ -473,7 +476,7 @@ function acf_display_field_post_object( $field, $field_info, $post_id ) {
 /**
  * Displays an ACF page link field.
  *
- * Not as useful as post_object since the field returns the URL.
+ * Not as useful as post_object since the field returns the URL for archive.
  *
  * @link https://www.advancedcustomfields.com/resources/page-link
  *
@@ -489,6 +492,29 @@ function acf_display_field_page_link( $field, $field_info, $post_id ) {
 	}
 	//bw_trace2( $field, "field", true);
 	$field = get_field( $field_info['name'], $post_id, false );
+	//bw_trace2( $field, "field unformatted", true);
+	acf_display_field_post_object( $field, $field_info, $post_id );
+}
+
+/**
+ * Displays an ACF relationship field.
+ *
+ *
+ * @link https://www.advancedcustomfields.com/resources/relationship
+ *
+ * @param $field
+ * @param $field_info
+ * @param $post_id
+ * @return void
+ */
+function acf_display_field_relationship( $field, $field_info, $post_id ) {
+	// Allow for no selection.
+	if ( !$field ) {
+		return;
+	}
+	$field_info['multiple'] = 1;
+	//bw_trace2( $field, "field", true);
+	//$field = get_field( $field_info['name'], $post_id, false );
 	//bw_trace2( $field, "field unformatted", true);
 	acf_display_field_post_object( $field, $field_info, $post_id );
 }
