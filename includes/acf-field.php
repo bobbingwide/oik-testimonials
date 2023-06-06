@@ -10,18 +10,24 @@
  * Displays classes for ACF field block.
  */
 function acf_display_field_block_classes( $field_name, $field_type, $block ) {
-	$classes=[ 'acf-field' ];
-	$classes[] = $field_name;
-	$classes[] = $field_type;
+	$classes=[ 'acf-field-' . $field_name ];
+	//$classes[] = $field_name;
+	$classes[] = 'acf-type-' .$field_type;
 	if ( ! empty( $block['className'] ) ) {
 		$classes=array_merge( $classes, explode( ' ', $block['className'] ) );
 	}
-	$classes=implode( ' ', $classes );
-//$anchor = '';
-//if( !empty( $block['anchor'] ) )
-//	$anchor = ' id="' . sanitize_title( $block['anchor'] ) . '"';
 
-	echo "<div class=\"$classes\">";
+	$classes=implode( ' ', $classes );
+	$anchor = $block['anchor'] ?? null;
+	//if( !empty( $block['anchor'] ) )
+	//	$anchor = ' id="' . sanitize_title( $block['anchor'] ) . '"';
+
+	//echo "<div class=\"$classes\">";
+	$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( $classes ), 'id' => $anchor ) );
+	echo '<div ';
+	echo $wrapper_attributes;
+	echo '>';
+	bw_trace2( $wrapper_attributes, 'wrapper attributes');
 }
 
 /**
@@ -105,6 +111,9 @@ function acf_display_field( $field_name, $field_info, $post_id ) {
 				break;
 			case 'link':
 				acf_display_field_link( $field, $field_info, $post_id );
+				break;
+			case 'post_object':
+				acf_display_field_post_object( $field, $field_info, $post_id );
 				break;
 			default:
 				echo esc_html( $field );
@@ -396,6 +405,10 @@ function acf_display_field_link( $field, $field_info, $post_id ) {
 	$link_url   =$field['url'];
 	$link_title =$field['title'];
 	$link_target=$field['target'] ? $field['target'] : '_self';
+	acf_display_link( $link_url, $link_title, $link_target );
+}
+
+function acf_display_link( $link_url, $link_title, $link_target='_self') {
 	echo '<a href="';
 	echo esc_url( $link_url );
 	echo '" target="';
@@ -403,4 +416,58 @@ function acf_display_field_link( $field, $field_info, $post_id ) {
 	echo '">';
 	echo esc_html( $link_title );
 	echo '</a>';
+}
+
+/**
+ * Displays an ACF post object field.
+ *
+ *
+ * @link https://www.advancedcustomfields.com/resources/post-object
+ *
+ * @param $field
+ * @param $field_info
+ * @param $post_id
+ * @return void
+ */
+function acf_display_field_post_object( $field, $field_info, $post_id ) {
+	// Allow for no selection.
+	if ( !$field ) {
+		return;
+	}
+	$posts= is_array( $field ) ? $field : [ $field ];
+	$multiple = $field_info['multiple'];
+	if ( count( $posts )) {
+		//if ( 'object' === $field_info['return_format']) {
+		if ( $multiple ) {
+			echo '<ul>';
+		}
+		foreach ( $posts as $post ) {
+			if ( is_numeric( $post ) ) {
+				$post=get_post( $post );
+			}
+			if ( $multiple ) {
+				echo '<li>';
+			}
+			acf_display_link( get_permalink( $post->ID ), $post->post_title );
+			if ( $multiple ) {
+				echo '</li>';
+			}
+		}
+		if ( $multiple ) {
+			echo '</ul>';
+		}
+	}
+	/*
+	} else {
+
+		// return_format=id
+		foreach ( $posts as $ID ) {
+			$post=get_post( $ID );
+			acf_display_link( get_permalink( $post->ID ), $post->post_title );
+		}
+
+
+	}
+	*/
+
 }
