@@ -103,6 +103,9 @@ function acf_display_field( $field_name, $field_info, $post_id ) {
 			case 'true_false':
 				acf_display_field_true_false( $field, $field_info );
 				break;
+			case 'link':
+				acf_display_field_link( $field, $field_info, $post_id );
+				break;
 			default:
 				echo esc_html( $field );
 		}
@@ -193,7 +196,7 @@ function acf_display_field_email( $field, $field_info) {
  */
 function acf_display_field_url( $field, $field_info ) {
 	echo '<a href="';
-	echo esc_attr( $field );
+	echo esc_url( $field );
 	echo '">';
 	echo esc_attr( $field );
 	echo '</a>';
@@ -357,7 +360,7 @@ function acf_display_field_select( $field, $field_info ) {
  * Displays an ACF true_false field.
  *
  *
- * @link https://www.advancedcustomfields.com/resources/select/
+ * @link https://www.advancedcustomfields.com/resources/true-false
  *
  * @param $field
  * @param $field_info
@@ -371,3 +374,33 @@ function acf_display_field_true_false( $field, $field_info ) {
 	}
 }
 
+/**
+ * Displays an ACF link field.
+ *
+ * If the `return_format` has been set to `url` rather than `array` we don't get the link title
+ * or target. This isn't particularly user friendly. So we force it to return the array by
+ * getting the field again, this time without formatting.
+ *
+ * @link https://www.advancedcustomfields.com/resources/link
+ *
+ * @param $field
+ * @param $field_info
+ * @param $post_id
+ * @return void
+ */
+function acf_display_field_link( $field, $field_info, $post_id ) {
+
+	if ( 'url' === $field_info['return_format'] ) {
+		$field = get_field( $field_info['name'], $post_id, false );
+	}
+	$link_url   =$field['url'];
+	$link_title =$field['title'];
+	$link_target=$field['target'] ? $field['target'] : '_self';
+	echo '<a href="';
+	echo esc_url( $link_url );
+	echo '" target="';
+	echo esc_attr( $link_target );
+	echo '">';
+	echo esc_html( $link_title );
+	echo '</a>';
+}
