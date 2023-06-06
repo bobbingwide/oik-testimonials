@@ -115,6 +115,10 @@ function acf_display_field( $field_name, $field_info, $post_id ) {
 			case 'post_object':
 				acf_display_field_post_object( $field, $field_info, $post_id );
 				break;
+			case 'page_link':
+				acf_display_field_page_link( $field, $field_info, $post_id );
+				break;
+
 			default:
 				echo esc_html( $field );
 		}
@@ -421,6 +425,7 @@ function acf_display_link( $link_url, $link_title, $link_target='_self') {
 /**
  * Displays an ACF post object field.
  *
+ * Also used for displaying page_link fields.
  *
  * @link https://www.advancedcustomfields.com/resources/post-object
  *
@@ -448,7 +453,12 @@ function acf_display_field_post_object( $field, $field_info, $post_id ) {
 			if ( $multiple ) {
 				echo '<li>';
 			}
-			acf_display_link( get_permalink( $post->ID ), $post->post_title );
+			// Page_link fields can include archives which are stored as URLs
+			if ( is_scalar( $post )) {
+				acf_display_link( $post, $post );
+			} else {
+				acf_display_link( get_permalink( $post->ID ), $post->post_title );
+			}
 			if ( $multiple ) {
 				echo '</li>';
 			}
@@ -457,17 +467,28 @@ function acf_display_field_post_object( $field, $field_info, $post_id ) {
 			echo '</ul>';
 		}
 	}
-	/*
-	} else {
 
-		// return_format=id
-		foreach ( $posts as $ID ) {
-			$post=get_post( $ID );
-			acf_display_link( get_permalink( $post->ID ), $post->post_title );
-		}
+}
 
-
+/**
+ * Displays an ACF page link field.
+ *
+ * Not as useful as post_object since the field returns the URL.
+ *
+ * @link https://www.advancedcustomfields.com/resources/page-link
+ *
+ * @param $field
+ * @param $field_info
+ * @param $post_id
+ * @return void
+ */
+function acf_display_field_page_link( $field, $field_info, $post_id ) {
+	// Allow for no selection.
+	if ( !$field ) {
+		return;
 	}
-	*/
-
+	//bw_trace2( $field, "field", true);
+	$field = get_field( $field_info['name'], $post_id, false );
+	//bw_trace2( $field, "field unformatted", true);
+	acf_display_field_post_object( $field, $field_info, $post_id );
 }
