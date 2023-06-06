@@ -121,6 +121,9 @@ function acf_display_field( $field_name, $field_info, $post_id ) {
 			case 'relationship':
 				acf_display_field_relationship( $field, $field_info, $post_id );
 				break;
+			case 'taxonomy':
+				acf_display_field_taxonomy( $field, $field_info, $post_id );
+				break;
 
 			default:
 				echo esc_html( $field );
@@ -517,4 +520,62 @@ function acf_display_field_relationship( $field, $field_info, $post_id ) {
 	//$field = get_field( $field_info['name'], $post_id, false );
 	//bw_trace2( $field, "field unformatted", true);
 	acf_display_field_post_object( $field, $field_info, $post_id );
+}
+
+/**
+ * Displays an ACF taxonomy field.
+ *
+ *
+ * @link https://www.advancedcustomfields.com/resources/taxonomy
+ *
+ * @param $field
+ * @param $field_info
+ * @param $post_id
+ * @return void
+ */
+function acf_display_field_taxonomy( $field, $field_info, $post_id ) {
+	// Allow for no selection.
+	if ( ! $field ) {
+		return;
+	}
+	bw_trace2();
+	$terms   =is_array( $field ) ? $field : [ $field ];
+	// ACF doesn't correctly set the 'multiple' field.
+	// So determine the value from the field type.
+	$multiple=$field_info['multiple'];
+	switch ( $field_info['field_type']) {
+		case 'multi_select':
+		case 'checkbox':
+			$multiple = 1;
+			break;
+		case 'select':
+		case 'radio':
+			$multiple = 0;
+	}
+	if ( count( $terms ) ) {
+		if ( $multiple ) {
+			echo '<ul>';
+		}
+		foreach ( $terms as $term ) {
+			if ( is_numeric( $term ) ) {
+				$term=get_term( $term );
+			}
+			if ( $multiple ) {
+				echo '<li>';
+			}
+			// Page_link fields can include archives which are stored as URLs
+			if ( is_scalar( $term ) ) {
+				acf_display_link( $term, $term );
+			} else {
+				acf_display_link( get_term_link( $term ), $term->name );
+			}
+			if ( $multiple ) {
+				echo '</li>';
+			}
+		}
+		if ( $multiple ) {
+			echo '</ul>';
+		}
+
+	}
 }
