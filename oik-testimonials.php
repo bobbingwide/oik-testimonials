@@ -129,105 +129,78 @@ function oik_testimonials_init_acf() {
  * @return void
  */
 function oik_testimonials_acf_include_fields() {
-	oik_require( 'includes/acf-field-names.php', 'oik-testimonials');
-	$acf_field_name_field = acf_build_acf_field_name_field();
-	$acf_cycler_field = acf_build_acf_cycler_field();
+	oik_require( 'includes/acf-field-names.php', 'oik-testimonials' );
+	$acf_cycler_field=acf_build_acf_cycler_field();
 	oik_maybe_add_local_field_group( array(
-			'key'                  =>'group_645a613de20b1',
-			'title'                =>'Testimonials',
-			'fields'               =>array(
+		'key'                  =>'group_645a613de20b1',
+		'title'                =>'Testimonials',
+		'fields'               =>array(
+			array(
+				'key'              =>'field_645a613e44c52',
+				'label'            =>'Author name',
+				'name'             =>'_oik_testimonials_name',
+				'aria-label'       =>'',
+				'type'             =>'text',
+				'instructions'     =>'',
+				'required'         =>1,
+				'conditional_logic'=>0,
+				'wrapper'          =>array(
+					'width'=>'',
+					'class'=>'',
+					'id'   =>'',
+				),
+				'default_value'    =>'',
+				'maxlength'        =>'',
+				'placeholder'      =>'Testimonial author name',
+				'prepend'          =>'',
+				'append'           =>'',
+			),
+		),
+		'location'             =>array(
+			array(
 				array(
-					'key'              =>'field_645a613e44c52',
-					'label'            =>'Author name',
-					'name'             =>'_oik_testimonials_name',
-					'aria-label'       =>'',
-					'type'             =>'text',
-					'instructions'     =>'',
-					'required'         =>1,
-					'conditional_logic'=>0,
-					'wrapper'          =>array(
-						'width'=>'',
-						'class'=>'',
-						'id'   =>'',
-					),
-					'default_value'    =>'',
-					'maxlength'        =>'',
-					'placeholder'      =>'Testimonial author name',
-					'prepend'          =>'',
-					'append'           =>'',
+					'param'   =>'post_type',
+					'operator'=>'==',
+					'value'   =>'oik_testimonials',
 				),
 			),
-			'location'             =>array(
-				array(
-					array(
-						'param'   =>'post_type',
-						'operator'=>'==',
-						'value'   =>'oik_testimonials',
-					),
-				),
-			),
-			'menu_order'           =>0,
-			'position'             =>'normal',
-			'style'                =>'default',
-			'label_placement'      =>'top',
-			'instruction_placement'=>'label',
-			'hide_on_screen'       =>'',
-			'active'               =>true,
-			'description'          =>'',
-			'show_in_rest'         =>1,
-		) );
+		),
+		'menu_order'           =>0,
+		'position'             =>'normal',
+		'style'                =>'default',
+		'label_placement'      =>'top',
+		'instruction_placement'=>'label',
+		'hide_on_screen'       =>'',
+		'active'               =>true,
+		'description'          =>'',
+		'show_in_rest'         =>1,
+	) );
 	acf_add_local_field_group( array(
-			'key' => 'group_645e28e943198',
-			'title' => 'acf-cycler',
-			'fields' => array(
-				$acf_cycler_field
+		'key'                  =>'group_645e28e943198',
+		'title'                =>'acf-cycler',
+		'fields'               =>array(
+			$acf_cycler_field
 
-			),
-			'location' => array(
+		),
+		'location'             =>array(
+			array(
 				array(
-					array(
-						'param' => 'block',
-						'operator' => '==',
-						'value' => 'oik-testimonials/acf-cycler',
-					),
+					'param'   =>'block',
+					'operator'=>'==',
+					'value'   =>'oik-testimonials/acf-cycler',
 				),
 			),
-			'menu_order' => 0,
-			'position' => 'normal',
-			'style' => 'default',
-			'label_placement' => 'top',
-			'instruction_placement' => 'label',
-			'hide_on_screen' => '',
-			'active' => true,
-			'description' => '',
-			'show_in_rest' => 0,
-		) );
-	acf_add_local_field_group( array(
-			'key' => 'group_645f589a8cade',
-			'title' => 'acf-field',
-			'fields' => array(
-				$acf_field_name_field
-			),
-			'location' => array(
-				array(
-					array(
-						'param' => 'block',
-						'operator' => '==',
-						'value' => 'oik-testimonials/acf-field',
-					),
-				),
-			),
-			'menu_order' => 0,
-			'position' => 'normal',
-			'style' => 'default',
-			'label_placement' => 'top',
-			'instruction_placement' => 'label',
-			'hide_on_screen' => '',
-			'active' => true,
-			'description' => '',
-			'show_in_rest' => 0,
-		) );
-	add_filter( 'acf/prepare_field/name=acf-field-name', 'acf_prepare_field_name_acf_field_name' );
+		),
+		'menu_order'           =>0,
+		'position'             =>'normal',
+		'style'                =>'default',
+		'label_placement'      =>'top',
+		'instruction_placement'=>'label',
+		'hide_on_screen'       =>'',
+		'active'               =>true,
+		'description'          =>'',
+		'show_in_rest'         =>0,
+	) );
 }
 
 function oik_is_field_group_registered( $title ) {
@@ -269,8 +242,6 @@ function oik_testimonials_register_blocks() {
 	$registered = register_block_type( __DIR__ . '/blocks/acf-cycler' );
 	bw_trace2( $registered, 'registered?', false );
 	$registered = register_block_type( __DIR__ . '/blocks/acf-author-name' );
-	bw_trace2( $registered, 'registered?', false );
-	$registered = register_block_type( __DIR__ . '/blocks/acf-field' );
 	bw_trace2( $registered, 'registered?', false );
 }
 
