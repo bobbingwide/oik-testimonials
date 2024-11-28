@@ -4,7 +4,7 @@ Plugin Name: oik-testimonials
 Plugin URI: https://www.oik-plugins.com/oik-plugins/oik-testimonials
 Description: "better by far" oik testimonials 
 Depends: oik base plugin, oik fields
-Version: 0.6.0
+Version: 1.0.0
 Author: bobbingwide
 Author URI: https://www.oik-plugins.com/author/bobbingwide
 Text Domain: oik-testimonials
@@ -286,8 +286,8 @@ function oik_register_oik_testimonials() {
 	  bw_register_field( "_oik_testimonials_name", "text", __( "Author name", "oik-testimonials" ), array( "#required"=>true ) );
 	  bw_register_field_for_object_type( "_oik_testimonials_name", $post_type );
   }
-  add_filter( "manage_edit-${post_type}_columns", "oik_testimonials_columns", 10, 2 );
-  add_action( "manage_${post_type}_posts_custom_column", "bw_custom_column_admin", 10, 2 );
+  add_filter( "manage_edit-{$post_type}_columns", "oik_testimonials_columns", 10, 2 );
+  add_action( "manage_{$post_type}_posts_custom_column", "bw_custom_column_admin", 10, 2 );
 }
 
 /**
