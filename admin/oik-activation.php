@@ -1,6 +1,12 @@
-<?php // (C) Copyright Bobbing Wide 2012-2017
+<?php
+/**
+ * Dependent plugin activation logic.
+ *
+ * @copyright (C) Copyright Bobbing Wide 2012-2017, 2020, 2022,2023
+ * @package oik-libs
+ */
 if ( !defined( "OIK_ACTIVATION_INCLUDED" ) ) {
-define( "OIK_ACTIVATION_INCLUDED", "3.2.0" );
+define( "OIK_ACTIVATION_INCLUDED", "3.2.3" );
 
 
 if ( function_exists( "oik_plugin_lazy_activation" ) ) {
@@ -20,6 +26,7 @@ function oik_plugin_install_plugin( $plugin ) {
 	$link = '<a href="';
 	$link .= $url;
 	$link .= '">';
+	/* translators: %s: plugin name */
 	$link .= sprintf( __( 'Install %1$s', null ), $plugin ) ;
 	$link .= "</a>";
 	return $link ;
@@ -52,6 +59,7 @@ function oik_plugin_activate_plugin( $plugin, $plugin_name) {
 	$link = '<a href="';
 	$link .= $url;
 	$link .= '">';
+	/* translators: %s: plugin name */
 	$link .= sprintf( __( 'Activate %1$s', null ), $plugin_name );
 	$link .= "</a>";
 	return $link;
@@ -69,7 +77,8 @@ function oik_plugin_update_plugin( $plugin ) {
 	$url = wp_nonce_url( $url, "upgrade-plugin_$plugin" ); 
 	$link = '<a href="';
 	$link .= $url;
-	$link .= '">'; 
+	$link .= '">';
+	/* translators: %s: plugin name */
 	$link .= sprintf( __( 'Upgrade %1$s', null ), $plugin );
 	$link .= "</a>";
 	return $link;
@@ -186,10 +195,12 @@ function oik_plugin_oik_install_link( $plugin, $problem="missing" ) {
 if ( !function_exists( "oik_plugin_plugin_inactive" ) ) {
 function oik_plugin_plugin_inactive( $plugin=null, $dependencies=null, $problem=null ) {
   $plugin_name = basename( $plugin, ".php" );
-  $dependencies = str_replace( ":", __(" version ", null) , $dependencies );
+  $dependencies = str_replace( ":", ' ' . __("version", null) . ' ' , $dependencies );
   $text = "<p><b>";
+  /* translators: %s: plugin dependencies, comma separated */
   $text .= sprintf( __( '%1$s may not be fully functional.', null), $plugin_name );
   $text .= "</b> ";
+   /* translators: %s: plugin dependencies, comma separated */
   $text .= sprintf( __( 'Please install and activate the required minimum version of this plugin: %1$s', null ), $dependencies );
 	$text .= "</p>";
   
