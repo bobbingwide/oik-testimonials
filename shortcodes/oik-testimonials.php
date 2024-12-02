@@ -72,7 +72,8 @@ function bw_testimonials( $atts=null, $content=null, $tag=null ) {
   $atts['post_type'] = bw_array_get( $atts, "post_type", "oik_testimonials" );
   $atts['orderby'] = bw_array_get( $atts, "orderby", "rand" );
   $atts['post_parent'] = 0;
-  $atts['format'] = bw_array_get( $atts, 'format', 'LE_M' );
+  //$atts['format'] = bw_array_get( $atts, 'format', 'T/E_M' );
+  //$atts['block'] = bw_array_get( $atts, 'block', false );
   oik_require( "shortcodes/oik-pages.php" );
   e( bw_pages( $atts ));
   ediv();
